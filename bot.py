@@ -25,10 +25,11 @@ async def on_message(message):
         await message.add_reaction("😏")
         print("Message from {0.author.name} in {0.guild.name} getting smirked 😏 \nMessage contents : {0.content}"
             .format(message))
+
     await bot.process_commands(message)
 
 
-cogs = ["commands"]
+cogs = ["commands.chance_commands", "commands.chat_commands", "commands.math_commands", "commands.admin_commands"]
 
 for cog in cogs:
     bot.load_extension(cog)
