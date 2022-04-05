@@ -1,39 +1,56 @@
 import discord
-import json
+from discord.ext import commands
+import random as r
 
-tokens = json.load(open(file="./tokens.json", encoding="utf-8"))
+class Chance(commands.Cog):
+    import random as r
 
-game = discord.Game("Five Nights at Freddy's")
-client = discord.Client(status=discord.Status.online, activity=game)
+    def __init__(self, bot):
+        self.bot = bot
 
-@client.event
-async def on_ready():
-    print("Logged in as {0.user}".format(client))
+    """Flips a coin"""
+    @commands.command()
+    async def flipcoin(ctx):
+        coin = r.randint(0,1)
+        if coin == 1:
+            coin = "Heads"
+        else:
+            coin = "Tails"
+        await ctx.send("{0}!".format(coin))
 
-@client.event
-async def on_message(message):
-    print("On message called")
-    # If message came from client, ignore it and return
-    if message.author == client.user:
-        print("client message, ignoring")
-        return
-    # If message starts with "$hello", client responds
-    if message.content.startswith("$hello"):
-        await message.channel.send("Hello!")
-        print("Sending Hello")
+    """Rolls a n sided die"""
+    @commands.command()
+    async def roll(ctx, sides):
+        sides = int(sides)
+        if sides < 1:
+            return
+        roll = r.randint(1,sides)
+        await ctx.send("Rolled a {0}!".format(roll))
+
+class Chat(commands.Cog):
+
+    def __init__(self, bot):
+        self.bot = bot
+
+    """Returns greeting"""
+    @commands.command()
+    async def hello(ctx):
+        await ctx.send("Hello!")
+
+class Math(commands.Cog):
+
+    def __init__(self, bot):
+        self.bot = bot
     
-    # Whenever a post is made in selected channel, reacts with smirk
-    if str((message.channel)) == "memes😏":
-        await message.add_reaction("😏")
-        print("Message from {0.author.name} in {0.guild.name} getting smirked 😏 \nMessage contents : {0.content}"
-            .format(message))
+    """Adds the numbers given"""
+    @commands.command()
+    async def add(ctx, *args):
+        total = 0
+        for arg in args:
+            total +=int(arg)
+        await ctx.send("That equals {0}!".format(total))
 
-
-
-client.run(tokens["token"])
-
-
-
-
-
-
+def setup(bot):
+    bot.add_cog(Chance(bot))
+    bot.add_cog(Chat(bot))
+    bot.add_cog(Math(bot))
