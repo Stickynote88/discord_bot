@@ -15,11 +15,6 @@ async def on_ready():
 """On Message: This is where the smirking magic happens, smirks any post made in meme chat"""
 @bot.event
 async def on_message(message):
-    # If message came from client, ignore it and return
-    if message.author == bot.user:
-        print("bot message, ignoring")
-        return
-
     # Whenever a post is made in selected channel, reacts with smirk
     if str((message.channel)) == "memes😏":
         await message.add_reaction("😏")
