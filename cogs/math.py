@@ -13,5 +13,5 @@ class Math(commands.Cog):
             total +=int(arg)
         await ctx.send("That equals {0}!".format(total))
 
-def setup(bot):
-    bot.add_cog(Math(bot))
+async def setup(bot):
+    await bot.add_cog(Math(bot))

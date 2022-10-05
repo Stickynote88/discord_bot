@@ -19,5 +19,5 @@ class Admin(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send("You don't possess the role for that bucko ")
 
-def setup(bot):
-    bot.add_cog(Admin(bot))
+async def setup(bot):
+    await bot.add_cog(Admin(bot))

@@ -1,8 +1,7 @@
-import discord
+import discord, json, asyncio, os
 from discord.ext import commands
-import json
 
-tokens = json.load(open(file="./tokens.json", encoding="utf-8"))
+
 bot = commands.Bot(command_prefix="$", intents=discord.Intents.all())
 
 # Events
@@ -24,11 +23,18 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-cogs = ["commands.chance_commands", "commands.chat_commands", "commands.math_commands", "commands.admin_commands"]
+async def load_extensions():
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            print(f"Loading {filename[:-3]} cog...", end =" ")
+            await bot.load_extension(f"cogs.{filename[:-3]}")
+            print(f"Done")
 
-for cog in cogs:
-    bot.load_extension(cog)
-    print("Loaded {0}".format(cog))
+async def main():
+    async with bot:
 
-bot.run(tokens["token"])
+        await load_extensions()
+        tokens = json.load(open(file="./tokens.json", encoding="utf-8"))
+        await bot.start(tokens["token"])
 
+asyncio.run(main())

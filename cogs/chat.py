@@ -11,5 +11,5 @@ class Chat(commands.Cog):
     async def hello(self, ctx):
         await ctx.send("Hello {0.author.name}!".format(ctx))
 
-def setup(bot):
-    bot.add_cog(Chat(bot))
+async def setup(bot):
+    await bot.add_cog(Chat(bot))

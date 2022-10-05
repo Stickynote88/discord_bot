@@ -26,5 +26,5 @@ class Chance(commands.Cog):
         roll = r.randint(1,sides)
         await ctx.send("Rolled a {0}!".format(roll))
 
-def setup(bot):
-    bot.add_cog(Chance(bot))
+async def setup(bot):
+    await bot.add_cog(Chance(bot))
